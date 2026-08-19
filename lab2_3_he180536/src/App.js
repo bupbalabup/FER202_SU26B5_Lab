@@ -60,7 +60,7 @@ function App() {
             (attendance) => attendance.status === "PRESENT"
         ).length;
         const absent = total - present;
-        const rate = total > 0 ? Math.round((present / total) * 100) : 0;
+        const rate = present;
 
         return { total, present, absent, rate };
     }, [attendances]);
@@ -142,7 +142,7 @@ function App() {
 
             <div className="p-3">
                 <p>
-                    Tổng số bản ghi: {summary.total} Có mặt:{" "} {summary.present} Vắng mặt:{" "} {summary.absent} Tỷ lệ đi học:{" "}{summary.rate}%
+                    Tổng số bản ghi: {summary.total} Có mặt:{" "} {summary.present} Vắng mặt:{" "} {summary.absent} Tỷ lệ đi học:{" "}{summary.present}/{summary.total}
                 </p>
             </div>
 
@@ -166,7 +166,12 @@ function App() {
                                 <td>{attendance.classId}</td>
                                 <td>{attendance.name}</td>
                                 <td>
-                                    {new Date(attendance.date).toLocaleDateString("vi-VN")}
+                                    {new Date(attendance.date).toLocaleString("vi-VN",
+                                        {
+                                            dateStyle: "short",
+                                            timeStyle: "short"
+                                        }
+                                    )}
                                 </td>
                                 <td>
                                     <Button variant={attendance.status === "PRESENT" ? "success" : "danger"} onClick={() => handleChangeStatus(attendance.id)}>
